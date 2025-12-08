@@ -5,6 +5,7 @@ class Brand(models.Model):
     name = models.CharField(max_length=100)
     
     
+    
 class Car(models.Model):
     id = models.AutoField(primary_key=True)
     model = models.CharField(max_length=200, blank=True, null=True)
