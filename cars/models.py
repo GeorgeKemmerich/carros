@@ -21,7 +21,7 @@ class Car(models.Model):
     model_year = models.IntegerField()
     price = models.FloatField(blank=True, null=True)
     state = models.CharField(max_length=2)
-    photo = models.ImageField(upload_to='cars/')
+    photo = models.ImageField(upload_to='cars/', blank=True, null=True)
 
     def __str__(self):
         return self.model
