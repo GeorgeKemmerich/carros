@@ -1,10 +1,5 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TopCar</title>
-      <style>
+{% block content %}
+  <style>
     .car-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -45,16 +40,12 @@
       font-size: 1.5rem;
       margin: 10px;
     }
-    
-    .car-card p1 {
-      font-size: 1.75rem;
-      margin-bottom: 10px;
-      
-    }
-    .car-card p2 {
-      font-size: 1.5rem;
+
+    .car-card p {
+      font-size: 1rem;
       margin-bottom: 10px;
     }
+
     @media (max-width: 768px) {
       .car-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -99,29 +90,23 @@
         background-color: #108eb8;
     }
   </style>
-</head>
-    <Body>
-{% block content %}
-    <form method="GET" action="{% url 'cars_list' %}">
+
+  <form method="GET" action="{% url 'cars_list' %}">
     <input type="text" name="search" placeholder="Buscar carro...">
     <button type="submit">Buscar</button>
-        </form>
-    <div class="car-grid">
+  </form>
+
+  <div class="car-grid">
     {% if cars %}
       {% for car in cars %}
         <div class="car-card">
           <img src="{{ car.photo.url }}" alt="{{ car.model }} - {{ car.brand }}">
-          <h2>{{ car.brand }} {{ car.model }} -  {{ car.factory_year }}/{{ car.model_year }}</h2>
-          <p1>R$ {{ car.price }}</p1>
-          <br>
-          <p2>  {{ car.version }} - {{ car.motor }} - {{ car.category }}</p2>
-
+          <h2>{{ car.brand }} {{ car.model }}</h2>
+          <p>{{ car.factory_year }} - R$ {{ car.price }} - {{ car.version }} - {{ car.motor }} - {{ car.category }}</p>
         </div>
       {% endfor %}
     {% else %}
       <p class="no-results">Nenhum carro encontrado.</p>
     {% endif %}
-        </div>
+  </div>
 {% endblock %}
-    </Body>
-</html>
