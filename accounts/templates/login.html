@@ -1,15 +1,198 @@
 {% extends "base.html" %}
-    {% block content %}
-        <form method="post">
 
-            {% csrf_token %}
-            <table>
+{% block title %}Acesse sua Conta | TopCar{% endblock %}
 
-                {{login_form.as_table}}
+{% block content %}
 
-            </table>
+<style>
+  /* Container Principal que segura as duas metades */
+  .login-wrapper {
+    display: flex;
+    width: 100%;
+    min-height: 85vh; /* Ocupa quase a tela toda */
+    background-color: white;
+    border-radius: 20px;
+    overflow: hidden; /* Garante que a imagem não vaze as bordas redondas */
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1); /* Sombra difusa e moderna */
+    max-width: 1000px;
+    margin: 20px auto;
+  }
 
-            <input type="submit" value="Entrar">
+  /* --- LADO ESQUERDO: A Imagem --- */
+  .login-image-section {
+    flex: 1; /* Ocupa 50% do espaço */
+    background-image: url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=1966&auto=format&fit=crop'); /* Foto de carro bonita */
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 40px;
+    color: white;
+  }
 
-        </form>
-    {% endblock %}
+  /* Overlay escuro para o texto da imagem ficar legível */
+  .login-image-section::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.8) 100%);
+  }
+
+  .login-image-text {
+    position: relative;
+    z-index: 2;
+  }
+
+  .login-image-text h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+
+  /* --- LADO DIREITO: O Formulário --- */
+  .login-form-section {
+    flex: 1; /* Ocupa os outros 50% */
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .login-header {
+    margin-bottom: 30px;
+  }
+
+  .login-header h1 {
+    font-size: 1.8rem;
+    color: var(--text-color);
+    margin-bottom: 10px;
+  }
+
+  .login-header p {
+    color: #666;
+    font-size: 0.95rem;
+  }
+
+  /* Estilizando o Form do Django */
+  .login-form-section form p {
+    margin-bottom: 20px;
+  }
+
+  .login-form-section label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #444;
+  }
+
+  /* Input Moderno */
+  .login-form-section input[type="text"],
+  .login-form-section input[type="password"] {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid #eee; /* Borda sutil */
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: #f9f9f9;
+    transition: all 0.3s ease;
+  }
+
+  /* Efeito de Foco no Input */
+  .login-form-section input:focus {
+    border-color: var(--primary-color);
+    background-color: white;
+    box-shadow: 0 0 0 4px rgba(0, 150, 199, 0.1); /* Brilho azul suave */
+    outline: none;
+  }
+
+  /* Botão Principal */
+  .btn-login {
+    width: 100%;
+    padding: 14px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.3s;
+    margin-top: 10px;
+  }
+
+  .btn-login:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px); /* Pulinho ao passar o mouse */
+  }
+
+  /* Link de cadastro */
+  .register-link {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 0.9rem;
+    color: #666;
+  }
+
+  .register-link a {
+    color: var(--primary-color);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .register-link a:hover {
+    text-decoration: underline;
+  }
+
+  /* Responsividade: No celular vira uma coluna só */
+  @media (max-width: 768px) {
+    .login-wrapper {
+      flex-direction: column;
+      margin: 0;
+      border-radius: 0;
+      min-height: 100vh;
+    }
+    
+    .login-image-section {
+      display: none; /* Esconde a imagem no celular pra ficar mais leve */
+    }
+    
+    .login-form-section {
+      padding: 30px 20px;
+    }
+  }
+</style>
+
+<div class="login-wrapper">
+  
+  <div class="login-image-section">
+    <div class="login-image-text">
+      <h2>Dirija seus sonhos.</h2>
+      <p>Gerencie o estoque da sua concessionária com a melhor tecnologia do mercado.</p>
+    </div>
+  </div>
+
+  <div class="login-form-section">
+    <div class="login-header">
+      <h1>Bem-vindo de volta!</h1>
+      <p>Insira suas credenciais para acessar o painel.</p>
+    </div>
+
+    <form method="post">
+      {% csrf_token %}
+      
+      {{ login_form.as_p }}
+
+      <button type="submit" class="btn-login">Acessar Sistema</button>
+    </form>
+
+    <div class="register-link">
+      Ainda não tem conta? <a href="{% url 'register' %}">Crie agora</a>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

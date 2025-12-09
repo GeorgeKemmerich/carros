@@ -1,29 +1,248 @@
 {% extends "base.html" %}
-    {% block content %}
-     <form method="post">
-         {% csrf_token %}
 
-        <div class="form-group">
+{% block title %}Criar Conta | TopCar{% endblock %}
+
+{% block content %}
+
+<style>
+  /* --- CONTAINER PRINCIPAL (Split Screen) --- */
+  .auth-wrapper {
+    display: flex;
+    width: 100%;
+    min-height: 85vh;
+    background-color: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    max-width: 1000px;
+    margin: 20px auto;
+  }
+
+  /* --- LADO ESQUERDO: IMAGEM --- */
+  .auth-image-section {
+    flex: 1;
+    /* Foto de estrada/viagem para dar ideia de "início" */
+    background-image: url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=2021&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 40px;
+    color: white;
+    min-height: 300px;
+  }
+
+  /* Overlay escuro para texto */
+  .auth-image-section::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 60%, rgba(0,0,0,0.1) 100%);
+  }
+
+  .auth-image-text {
+    position: relative;
+    z-index: 2;
+  }
+
+  .auth-image-text h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  }
+
+  .auth-image-text p {
+    font-size: 1rem;
+    opacity: 0.9;
+  }
+
+  /* --- LADO DIREITO: FORMULÁRIO --- */
+  .auth-form-section {
+    flex: 1;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #ffffff;
+  }
+
+  .auth-header {
+    margin-bottom: 30px;
+    text-align: center;
+  }
+
+  .auth-header h1 {
+    font-size: 1.8rem;
+    color: var(--text-color);
+    margin-bottom: 5px;
+  }
+
+  .auth-header p {
+    color: #777;
+    font-size: 0.9rem;
+  }
+
+  /* Estilo dos Campos (Form Group) */
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #444;
+    margin-left: 15px; /* Alinha label com o início do input arredondado */
+  }
+
+  /* INPUTS ARREDONDADOS (PILL SHAPE) */
+  .form-group input[type="text"],
+  .form-group input[type="password"],
+  .form-group input[type="email"] {
+    width: 100%;
+    padding: 12px 20px; /* Padding maior nas laterais */
+    border: 2px solid #eee;
+    border-radius: 50px; /* Pílula completa */
+    font-size: 1rem;
+    background-color: #f9f9f9;
+    transition: all 0.3s ease;
+    outline: none;
+  }
+
+  .form-group input:focus {
+    border-color: var(--primary-color);
+    background-color: white;
+    box-shadow: 0 4px 15px rgba(0, 150, 199, 0.15);
+  }
+
+  /* Botão de Cadastro */
+  input[type="submit"] {
+    width: 100%;
+    padding: 14px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 50px; /* Botão Pílula */
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.3s;
+    margin-top: 10px;
+  }
+
+  input[type="submit"]:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 150, 199, 0.3);
+  }
+
+  /* Estilo de Erros */
+  .errorlist {
+    color: #e74c3c;
+    font-size: 0.85rem;
+    list-style: none;
+    margin-bottom: 5px;
+    padding-left: 15px;
+  }
+
+  /* Link de Login */
+  .login-redirect {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 0.9rem;
+    color: #666;
+  }
+
+  .login-redirect a {
+    color: var(--primary-color);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .login-redirect a:hover {
+    text-decoration: underline;
+  }
+
+  /* --- RESPONSIVIDADE --- */
+  @media (max-width: 768px) {
+    .auth-wrapper {
+      flex-direction: column;
+      margin: 0;
+      border-radius: 0;
+      min-height: 100vh;
+      box-shadow: none;
+    }
+    
+    /* Imagem vira banner no topo */
+    .auth-image-section {
+      flex: none;
+      height: 200px;
+      padding: 30px;
+    }
+
+    .auth-image-text h2 { font-size: 1.5rem; }
+    
+    .auth-form-section {
+      padding: 40px 25px;
+      border-top-left-radius: 30px;
+      border-top-right-radius: 30px;
+      margin-top: -30px; /* Sobe por cima da imagem */
+      position: relative;
+      z-index: 10;
+    }
+  }
+</style>
+
+<div class="auth-wrapper">
+  
+  <div class="auth-image-section">
+    <div class="auth-image-text">
+      <h2>Comece sua jornada.</h2>
+      <p>Junte-se a milhares de gestores que simplificaram seu estoque.</p>
+    </div>
+  </div>
+
+  <div class="auth-form-section">
+    <div class="auth-header">
+      <h1>Crie sua conta</h1>
+      <p>É rápido, fácil e gratuito.</p>
+    </div>
+
+    <form method="post">
+      {% csrf_token %}
+
+      <div class="form-group">
         {{ user_form.username.errors }}
-            <label>Usuário: </label>
+        <label for="{{ user_form.username.id_for_label }}">Usuário</label>
         {{ user_form.username }}    
-        </div>
+      </div>
 
-        <div class="form-group">
-        {{ user_form.password2.errors }}
-            <label>Senha: </label>
+      <div class="form-group">
+        {{ user_form.password1.errors }}
+        <label for="{{ user_form.password1.id_for_label }}">Senha</label>
         {{ user_form.password1 }}    
-        </div>
+      </div>
 
-        <div class="form-group">
+      <div class="form-group">
         {{ user_form.password2.errors }}
-            <label>Confime a senha: </label>
+        <label for="{{ user_form.password2.id_for_label }}">Confirme a senha</label>
         {{ user_form.password2 }}    
-        </div>
+      </div>
 
-        <div class="form-group">
-            <input type="submit" value="Cadastrar">    
-        </div>
+      <div class="form-group">
+        <input type="submit" value="Cadastrar">    
+      </div>
     </form>
 
-    {% endblock %}
+    <div class="login-redirect">
+      Já tem uma conta? <a href="{% url 'login' %}">Entrar agora</a>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

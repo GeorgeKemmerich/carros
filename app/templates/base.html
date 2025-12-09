@@ -1,89 +1,226 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}{% endblock %}</title>
+  <title>{% block title %}TopCar Multimarcas{% endblock %}</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" />
+
   <style>
+    /* --- CONFIGURAÇÃO DE CORES --- */
+    :root {
+      /* 1. O AZUL VIBRANTE (VOLTOU!) */
+      --primary-color: #0096c7;
+      --primary-dark: #0077b6;
+      
+      /* 2. O FUNDO PASTEL (SUBSTITUINDO O BRANCO) */
+      /* Um tom "Gelo/Céu Suave" para não cansar a vista */
+      --bg-color: #eef6f8; 
+      
+      /* Elementos brancos (Header e Cards) para contraste */
+      --white: #ffffff;
+      
+      --text-color: #333333;
+      --footer-bg: #ffffff;
+      --footer-text: #666666;
+      --border-color: #dae1e7; /* Borda levemente azulada para combinar */
+      --shadow: 0 4px 20px rgba(0, 150, 199, 0.08); /* Sombra com um leve tom azul */
+      --container-width: 1200px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
-        font-family: 'Open Sans', sans-serif;
-        background-color: #f7f7f7;
-        color: #333;
-        margin: 0;
-        padding: 0;
+      font-family: 'Open Sans', sans-serif;
+      background-color: var(--bg-color); /* AQUI ENTRA O PASTEL */
+      color: var(--text-color);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
     }
 
+    /* --- HEADER (Branco para destacar do fundo pastel) --- */
     header {
-        background-color: #0096c7;
-        color: #fff;
-        text-align: center;
-    }
-
-    footer {
-        background-color: #ccc;
-        color: #333;
-        padding: 20px;
-        text-align: center;
+      background-color: var(--white);
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
 
     nav {
-        background-color: #0096c7;
-        color: #fff;
-        height: 50px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+      height: 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: var(--container-width);
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Logo com o Azul Vibrante */
+    .logo {
+      font-weight: 800;
+      font-size: 22px;
+      color: var(--primary-color);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      text-decoration: none;
     }
 
     nav ul {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        display: flex;
-    }
-
-    nav ul li {
-        margin: 0 10px;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     nav ul li a {
-        color: #fff;
-        text-decoration: none;
-        font-size: 16px;
-        padding: 15px;
-        transition: all 0.3s ease;
+      color: #555;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 50px;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
+    nav ul li a .material-symbols-rounded {
+      font-size: 20px;
+      color: #777;
+    }
+
+    /* Hover com fundo pastel um pouco mais escuro */
     nav ul li a:hover {
-        background-color: #32bbe8;
+      background-color: var(--bg-color); 
+      color: var(--primary-color);
+    }
+    
+    nav ul li a:hover .material-symbols-rounded {
+      color: var(--primary-color);
     }
 
-    nav ul li.active a {
-        background-color: #666;
+    /* Botão de Destaque (Azul Vibrante) */
+    nav ul li a.btn-highlight {
+      background-color: var(--primary-color);
+      color: var(--white);
+    }
+    
+    nav ul li a.btn-highlight .material-symbols-rounded {
+      color: var(--white);
     }
 
-    nav ul li.active a:hover {
-        background-color: #999;
+    nav ul li a.btn-highlight:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(0, 150, 199, 0.4); /* Brilho azul */
     }
 
+    /* Avatar */
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-right: 10px;
+      padding-right: 15px;
+      border-right: 1px solid var(--border-color);
+    }
+
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      background-color: var(--primary-color);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .user-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    main {
+      flex: 1;
+      max-width: var(--container-width);
+      width: 100%;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+    footer {
+      background-color: var(--white);
+      border-top: 1px solid var(--border-color);
+      color: var(--footer-text);
+      padding: 20px 0;
+      text-align: center;
+      font-size: 13px;
+      margin-top: auto;
+    }
+
+    @media (max-width: 768px) {
+      nav { height: auto; padding: 15px; flex-direction: column; gap: 15px; }
+      nav ul { flex-wrap: wrap; justify-content: center; }
+      .user-profile { border-right: none; margin-right: 0; padding-right: 0; margin-bottom: 5px; }
+    }
   </style>
 </head>
 <body>
   <header>
     <nav>
+      <a href="{% url 'cars_list' %}" class="logo">
+        <span class="material-symbols-rounded">directions_car</span>
+        TopCar
+      </a>
+
       <ul>
         {% if user.is_authenticated %}
-          <li>Olá, {{ user.username }} </li>
-          <li><a href="{% url 'new_car' %}">Cadastrar Carro</a></li>
-          <li><a href="{% url 'logout' %}">Sair</a></li>
+          <div class="user-profile">
+            <div class="user-avatar">{{ user.username|make_list|first|upper }}</div>
+            <span class="user-name">{{ user.username }}</span>
+          </div>
+
+          <li>
+            <a href="{% url 'new_car' %}">
+              <span class="material-symbols-rounded">add_circle</span>
+              Novo Carro
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'logout' %}" class="btn-highlight">
+              <span class="material-symbols-rounded">logout</span>
+              Sair
+            </a>
+          </li>
         {% endif %}
 
         {% if not user.is_authenticated %}
-          <li><a href="{% url 'register' %}">Cadastre-se</a></li>
-          <li><a href="{% url 'login' %}">Entrar</a></li>
+          <li>
+            <a href="{% url 'login' %}">
+              <span class="material-symbols-rounded">login</span>
+              Entrar
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'register' %}" class="btn-highlight">
+              <span class="material-symbols-rounded">person_add</span>
+              Cadastrar
+            </a>
+          </li>
         {% endif %}
-
-        <li><a href="{% url 'cars_list' %}">Inicio</a></li>
       </ul>
     </nav>
   </header>
@@ -94,7 +231,7 @@
   </main>
 
   <footer>
-    <p>&copy; 2025 TopCar Multimarcas</p>
+    <p>&copy; 2025 TopCar Multimarcas - Sistema de Gestão.</p>
   </footer>
 </body>
 </html>

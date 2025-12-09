@@ -1,127 +1,146 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <style>
+<style>
+  /* --- SEU GRID ORIGINAL (INTACTO) --- */
+  .car-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin: 0 auto;
+    max-width: 1200px;
+    padding: 20px;
+  }
+
+  .car-card {
+    background-color: #e3e1e1;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    overflow: hidden;
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+
+  .car-card:hover {
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    transform: translateY(-2px);
+  }
+
+  .car-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .car-card h3 {
+    font-size: 20px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+  }
+
+  .car-card h2 {
+    font-size: 1.5rem;
+    margin: 10px;
+  }
+
+  .car-card p {
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+
+  @media (max-width: 768px) {
     .car-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-      margin: 0 auto;
-      max-width: 1200px;
-      padding: 20px;
+      grid-template-columns: repeat(2, 1fr);
     }
+  }
 
-    .car-card {
-      background-color: #e3e1e1;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-      border-radius: 10px;
-      overflow: hidden;
-      text-align: center;
-      transition: all 0.3s ease;
-    }
+  a {
+    font-size: 18px;
+    color: rgba(0, 0, 0, 0.87);
+    text-decoration: none;
+  }
 
-    .car-card:hover {
-        cursor: pointer;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-        transform: translateY(-2px);
-    }
+  a:hover {
+    color: #0096c7;
+  }
 
-    .car-card img {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-    }
+  /* --- BARRA DE BUSCA NOVA (ARREDONDADA E MODERNA) --- */
+  form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 30px auto; /* Aumentei um pouco a margem */
+    max-width: 600px;  /* Limita a largura para não ficar gigante */
+    position: relative; /* Essencial para o botão ficar dentro */
+    padding: 0 20px;
+  }
 
-    .car-card h3 {
-        font-size: 20px;
-        margin-top: 10px;
-        margin-bottom: 5px;
-    }
+  input[type="text"] {
+    width: 100%;
+    padding: 15px 110px 15px 25px; /* Espaço na direita para o botão não cobrir o texto */
+    font-size: 16px;
+    border: 2px solid transparent; /* Remove borda cinza padrão */
+    border-radius: 50px; /* Deixa totalmente redondo (Pílula) */
+    background-color: #fff; /* Fundo branco para destacar */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08); /* Sombra suave */
+    outline: none;
+    transition: all 0.3s ease;
+    color: #555;
+    margin-right: 0; /* Remove margem antiga */
+  }
 
-    .car-card h2 {
-      font-size: 1.5rem;
-      margin: 10px;
-    }
+  input[type="text"]:focus {
+    border-color: #0096c7; /* Azul ao clicar */
+    box-shadow: 0 4px 20px rgba(0, 150, 199, 0.2); /* Brilho azul */
+  }
 
-    .car-card p {
-      font-size: 1rem;
-      margin-bottom: 10px;
-    }
+  button[type="submit"] {
+    position: absolute;
+    right: 25px; /* Posiciona o botão DENTRO do input (considerando o padding do form) */
+    top: 5px; /* Centraliza verticalmente (considerando o tamanho do input) */
+    bottom: 5px;
+    
+    background-color: #0096c7;
+    color: #fff;
+    border: none;
+    padding: 0 25px;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 50px; /* Botão redondo também */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin: 0; /* Zera margens antigas */
+    height: auto; /* Deixa a altura automática baseada no top/bottom */
+  }
 
-    @media (max-width: 768px) {
-      .car-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
+  button[type="submit"]:hover {
+    background-color: #0077b6; /* Azul mais escuro no hover */
+    transform: translateY(0); /* Evita pulinhos indesejados aqui */
+  }
 
-    form {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-bottom: 20px;
-        text-align: center;
-        padding: 20px;
-    }
+</style>
 
-    input[type="text"] {
-        padding: 10px;
-        font-size: 16px;
-        border: 2px solid #e3e1e1;
-        border-radius: 4px;
-        margin-right: 10px;
-        transition: border-bottom-color 0.3s ease-in-out;
-    }
+<form method="GET" action="{% url 'cars_list' %}">
+  <input type="text" name="search" placeholder="Buscar carro...">
+  <button type="submit">Buscar</button>
+</form>
 
-    input[type="text"]:focus {
-        outline: none;
-        border-bottom-color: #e3e1e1;
-    }
+<div class="car-grid">
+  {% if cars %}
+    {% for car in cars %}
+    <a href="{% url 'car_detail' car.pk %}">
+      <div class="car-card">
+        <img src="{{ car.photo.url }}" alt="{{ car.model }} - {{ car.brand }}">
+        <h2>{{ car.brand }} {{ car.model }}</h2>
+        <p> R$ {{ car.price }} </p>
+        <p> {{ car.version }} - {{ car.motor }} - {{ car.category }} - {{ car.factory_year }} </p>
+      </div>
+    </a>
+    {% endfor %}
+  {% else %}
+    <p class="no-results" style="text-align: center; width: 100%; grid-column: 1 / -1;">Nenhum carro encontrado.</p>
+  {% endif %}
+</div>
 
-    button[type="submit"] {
-        background-color: #0096c7;
-        color: #fff;
-        border: none;
-        padding: 10px 20px;
-        font-size: 16px;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background-color 0.3s ease-in-out;
-    }
-
-    button[type="submit"]:hover {
-        background-color: #108eb8;
-    }
-    a{
-      font: size 18px;
-      color: rgba(0, 0, 0, 0.87);
-      text-decoration: none;
-    }
-
-    a:hover {
-      color: #0096c7;
-
-    }
-  </style>
-
-  <form method="GET" action="{% url 'cars_list' %}">
-    <input type="text" name="search" placeholder="Buscar carro...">
-    <button type="submit">Buscar</button>
-  </form>
-
-  <div class="car-grid">
-    {% if cars %}
-      {% for car in cars %}
-      <a href="{% url 'car_detail' car.pk %}">
-        <div class="car-card">
-          <img src="{{ car.photo.url }}" alt="{{ car.model }} - {{ car.brand }}">
-          <h2>{{ car.brand }} {{ car.model }}</h2>
-          <p> R$ {{ car.price }} </p>
-          <p> {{ car.version }} - {{ car.motor }} - {{ car.category }} - {{ car.factory_year }} </p>
-        </div>
-      </a>
-      {% endfor %}
-    {% else %}
-      <p class="no-results">Nenhum carro encontrado.</p>
-    {% endif %}
-  </div>
 {% endblock %}
