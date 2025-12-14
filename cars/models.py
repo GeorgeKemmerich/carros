@@ -22,6 +22,7 @@ class Car(models.Model):
     price = models.FloatField(blank=True, null=True)
     state = models.CharField(max_length=2)
     photo = models.ImageField(upload_to='cars/', blank=True, null=True)
+    bio = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return self.model

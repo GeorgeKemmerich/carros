@@ -2,6 +2,18 @@ from django.db.models.signals import pre_save, pre_delete, post_save, post_delet
 from django.dispatch import receiver
 from django.db.models import Sum
 from cars.models import Car, CarInventory
+from gemini_ai.client import generate_car_description
+import google.generativeai as genai
+from django.conf import settings
+
+
+@receiver(pre_save, sender=Car)
+def car_pre_save(sender,instance, **kwargs):
+     if not instance.bio:
+         ai_bio = generate_car_description(
+             instance.model, instance.brand, instance.factory_year
+         )
+         instance.bio = ai_bio
 
 
 
